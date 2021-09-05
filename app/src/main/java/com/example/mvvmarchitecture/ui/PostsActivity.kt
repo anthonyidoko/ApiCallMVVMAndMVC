@@ -52,7 +52,6 @@ class PostsActivity : AppCompatActivity(){
         }
 
         initViewModel()
-        postViewModel.populatePostsArrayList()
 
     }
 
@@ -105,7 +104,6 @@ class PostsActivity : AppCompatActivity(){
 
                 postsRecyclerViewAdapter.setOnPostClickListener(object : PostsRecyclerViewAdapter.OnPostClick{
                     override fun onPostClickListener(position: Int, view: View) {
-                        val postId = "${position + 1}"
                         val title = view.findViewById<TextView>(R.id.postTitle)
                         val body = view.findViewById<TextView>(R.id.postBody)
                         val options = ActivityOptions.makeSceneTransitionAnimation(
@@ -126,11 +124,5 @@ class PostsActivity : AppCompatActivity(){
 
     }
 
-
-
-
 }
 
-private fun Intent.putExtra(s: String, clickedItem: PostsDataClassItem) {
-
-}
