@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/commentId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comment id"
+        app:layout_constraintBottom_toBottomOf="@+id/commentTitle"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/commentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="commentator title"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/topic_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentId" />
+
+    <TextView
+        android:id="@+id/commentBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Post Comments"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentTitle" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/comment_text"
+        android:text="commentator's email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentBody" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
