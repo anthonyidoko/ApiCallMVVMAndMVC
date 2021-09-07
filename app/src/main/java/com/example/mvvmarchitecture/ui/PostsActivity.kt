@@ -44,10 +44,13 @@ class PostsActivity : AppCompatActivity(){
         val myPostBody = findViewById<EditText>(R.id.myPostBody)
 
 
-        postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
+        //Create an instance of the PostsViewModel class
+        postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
 
-            initViewModel()
-            adapterList = ArrayList()
+        populateRecyclerView()
+
+        //Initialize the adapterList
+        adapterList = ArrayList()
 
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -65,14 +68,16 @@ class PostsActivity : AppCompatActivity(){
                 btnAddPost.visibility = View.GONE
             }
 
-//            val post = AddPostData(
-//                11,adapterList.size+1,
-//                myPostTitle.text.toString(),
-//                myPostBody.text.toString()
-//            )
-
-            val post = AddPostData(11,adapterList.size+1, "tony","idoko")
             btnCreatePost.setOnClickListener {
+                //Extract inputs from the edit text and store in variables
+                val post = AddPostData(
+                    11,adapterList.size,
+                    myPostTitle.text.toString(),
+                    myPostBody.text.toString()
+                )
+
+                //Create Post
+                createPost(post)
                 //Set visibility of the views
                 btnAddPost.visibility = View.VISIBLE
                 btnCreatePost.visibility = View.GONE
@@ -80,19 +85,9 @@ class PostsActivity : AppCompatActivity(){
                 myPostTitle.visibility = View.GONE
                 myPostBody.visibility = View.GONE
 
-                //Create Post
-                createPost(post)
-                Log.d("viewCheck", "onCreate:${myPostTitle.text}")
-                Log.d("viewCheck", "onCreate:${post.title}")
-                Log.d("viewCheck", "onCreate:${myPostBody.text}")
-                Log.d("viewCheck", "onCreate:${post.body}")
-                Log.d("viewCheck", "onCreate:${post.id}")
-                Log.d("viewCheck", "onCreate:${post.userId}")
-
                 //Clear text input in the editText fields
                 myPostTitle.text.clear()
                 myPostBody.text.clear()
-
             }
 
     }
@@ -131,16 +126,21 @@ class PostsActivity : AppCompatActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun initViewModel(){
+    //Fetch data from api and display on recyclerView
+    private fun populateRecyclerView(){
         postViewModel.makeAPICall()
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
+
+                //Populate adapterList
                 adapterList.addAll(it)
 
                 postsRecyclerViewAdapter.setUpdateData(adapterList)
                 postsRecyclerView.adapter = postsRecyclerViewAdapter
 
-                postsRecyclerViewAdapter.setOnPostClickListener(object : PostsRecyclerViewAdapter.OnPostClick{
+                //Set click listener on recyclerView items
+                postsRecyclerViewAdapter.setOnPostClickListener(
+                    object : PostsRecyclerViewAdapter.OnPostClick{
                     override fun onPostClickListener(position: Int, view: View) {
                         val title = view.findViewById<TextView>(R.id.postTitle)
                         val body = view.findViewById<TextView>(R.id.postBody)
@@ -162,6 +162,7 @@ class PostsActivity : AppCompatActivity(){
 
     }
 
+    //Create new post
     private fun createPost(post : AddPostData){
         postViewModel.makeNewPost(post)
         postViewModel.liveDataAddedPostList.observe(this, Observer {
@@ -172,13 +173,8 @@ class PostsActivity : AppCompatActivity(){
                 adapterList.add(newPost)
                 postsRecyclerViewAdapter.setUpdateData(adapterList)
 
-                Log.d("TAG", "initViewModel: ${adapterList[adapterList.size-1].body}")
-
-                Log.d("Post",it.body().toString())
-                Log.d("Post",it.message())
-                Log.d("Post",it.code().toString())
             } else {
-                Log.d("Post","Failed Attempt")
+                Toast.makeText(this,"Failed Attempt",Toast.LENGTH_SHORT).show()
 
             }
 

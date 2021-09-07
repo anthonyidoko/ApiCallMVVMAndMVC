@@ -32,10 +32,10 @@ class PostDetailActivity : AppCompatActivity() {
         val postTitle = findViewById<TextView>(R.id.postTitle1)
         val postBody = findViewById<TextView>(R.id.postBody1)
 
-        btnMakeComment.setOnClickListener {
-            val intent = Intent(this@PostDetailActivity, AddCommentActivity::class.java)
-            startActivity(intent)
-        }
+//        btnMakeComment.setOnClickListener {
+//            val intent = Intent(this@PostDetailActivity, AddCommentActivity::class.java)
+//            startActivity(intent)
+//        }
 
         val clickedItem = intent.getParcelableExtra<PostsDataClassItem>("EXTRA_DATA")
 

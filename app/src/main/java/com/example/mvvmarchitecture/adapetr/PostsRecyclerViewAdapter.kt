@@ -18,7 +18,7 @@ class PostsRecyclerViewAdapter() : RecyclerView.Adapter<PostsRecyclerViewAdapter
 
     fun setUpdateData(items :ArrayList<PostsDataClassItem>){
         this.postList = items
-        notifyDataSetChanged()
+        notifyItemInserted(items.size)
     }
 
     inner class ViewHolder(view : View,listener :OnPostClick) :RecyclerView.ViewHolder(view){
