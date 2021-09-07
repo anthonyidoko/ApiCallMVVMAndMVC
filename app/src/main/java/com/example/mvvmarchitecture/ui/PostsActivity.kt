@@ -8,9 +8,7 @@ import android.util.Log
 import android.util.Pair
 import android.view.Menu
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.adapetr.PostsRecyclerViewAdapter
+import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClass
 import com.example.mvvmarchitecture.data.PostsDataClassItem
 import com.example.mvvmarchitecture.viewModel.PostsViewModel
@@ -36,25 +35,65 @@ class PostsActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts_actvivity)
 
+        //Get reference to all views in the layout
         postsRecyclerView = findViewById(R.id.postsRecyclerView)
         val btnAddPost = findViewById<ImageView>(R.id.btnAddPost)
+        val btnCreatePost = findViewById<Button>(R.id.btnCreatePost)
+        val newPostTitle = findViewById<TextView>(R.id.newPostTitle)
+        val myPostTitle = findViewById<EditText>(R.id.myPostTitle)
+        val myPostBody = findViewById<EditText>(R.id.myPostBody)
+
 
         postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
 
+            initViewModel()
+            adapterList = ArrayList()
+
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
-
-            adapterList = ArrayList()
 
             //Initialize the mutableLiveData that holds the searched items value
             searchLiveData = MutableLiveData()
 
             btnAddPost.setOnClickListener {
-            val intent = Intent(this, AddPostActivity::class.java)
-            startActivity(intent)
-        }
+                //Set visibility of the views
+                btnCreatePost.visibility = View.VISIBLE
+                newPostTitle.visibility = View.VISIBLE
+                myPostTitle.visibility = View.VISIBLE
+                myPostBody.visibility = View.VISIBLE
+                myPostTitle.requestFocus()
+                btnAddPost.visibility = View.GONE
+            }
 
-        initViewModel()
+//            val post = AddPostData(
+//                11,adapterList.size+1,
+//                myPostTitle.text.toString(),
+//                myPostBody.text.toString()
+//            )
+
+            val post = AddPostData(11,adapterList.size+1, "tony","idoko")
+            btnCreatePost.setOnClickListener {
+                //Set visibility of the views
+                btnAddPost.visibility = View.VISIBLE
+                btnCreatePost.visibility = View.GONE
+                newPostTitle.visibility = View.GONE
+                myPostTitle.visibility = View.GONE
+                myPostBody.visibility = View.GONE
+
+                //Create Post
+                createPost(post)
+                Log.d("viewCheck", "onCreate:${myPostTitle.text}")
+                Log.d("viewCheck", "onCreate:${post.title}")
+                Log.d("viewCheck", "onCreate:${myPostBody.text}")
+                Log.d("viewCheck", "onCreate:${post.body}")
+                Log.d("viewCheck", "onCreate:${post.id}")
+                Log.d("viewCheck", "onCreate:${post.userId}")
+
+                //Clear text input in the editText fields
+                myPostTitle.text.clear()
+                myPostBody.text.clear()
+
+            }
 
     }
 
@@ -93,18 +132,13 @@ class PostsActivity : AppCompatActivity(){
     }
 
     private fun initViewModel(){
-
-//        postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
         postViewModel.makeAPICall()
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
                 adapterList.addAll(it)
 
-//                postsRecyclerViewAdapter.setUpdateData(searchLiveDataList)
                 postsRecyclerViewAdapter.setUpdateData(adapterList)
                 postsRecyclerView.adapter = postsRecyclerViewAdapter
-                //Add all the values in the immutablePostList to searchLivedata
-//                searchLiveData.value = postViewModel.immutablePostList.value //addAll(postViewModel.immutablePostList)
 
                 postsRecyclerViewAdapter.setOnPostClickListener(object : PostsRecyclerViewAdapter.OnPostClick{
                     override fun onPostClickListener(position: Int, view: View) {
@@ -124,6 +158,30 @@ class PostsActivity : AppCompatActivity(){
             }else{
                 Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show()
             }
+        })
+
+    }
+
+    private fun createPost(post : AddPostData){
+        postViewModel.makeNewPost(post)
+        postViewModel.liveDataAddedPostList.observe(this, Observer {
+            if (it.isSuccessful){
+
+                //Add the new post to the posts recyclerView
+                val newPost = PostsDataClassItem(post.body,adapterList.size+1,post.title,11)
+                adapterList.add(newPost)
+                postsRecyclerViewAdapter.setUpdateData(adapterList)
+
+                Log.d("TAG", "initViewModel: ${adapterList[adapterList.size-1].body}")
+
+                Log.d("Post",it.body().toString())
+                Log.d("Post",it.message())
+                Log.d("Post",it.code().toString())
+            } else {
+                Log.d("Post","Failed Attempt")
+
+            }
+
         })
 
     }
