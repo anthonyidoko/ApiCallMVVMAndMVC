@@ -44,12 +44,6 @@ class PostsViewModel :ViewModel() {
                 e.printStackTrace()
             }
 
-
-//            var catchwar = response[0]
-//             catchwar.id = count
-//
-//            mutablePostList.value?.add(catchwar)
-
         }
 
     }

@@ -30,6 +30,7 @@ class PostsActivity : AppCompatActivity(){
     lateinit var postsRecyclerView: RecyclerView
     lateinit var postViewModel : PostsViewModel
     lateinit var searchLiveData :MutableLiveData<PostsDataClass>
+    lateinit var adapterList :ArrayList<PostsDataClassItem>
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,8 @@ class PostsActivity : AppCompatActivity(){
 
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
+
+            adapterList = ArrayList()
 
             //Initialize the mutableLiveData that holds the searched items value
             searchLiveData = MutableLiveData()
@@ -95,9 +98,10 @@ class PostsActivity : AppCompatActivity(){
         postViewModel.makeAPICall()
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
+                adapterList.addAll(it)
 
 //                postsRecyclerViewAdapter.setUpdateData(searchLiveDataList)
-                postsRecyclerViewAdapter.setUpdateData(it)
+                postsRecyclerViewAdapter.setUpdateData(adapterList)
                 postsRecyclerView.adapter = postsRecyclerViewAdapter
                 //Add all the values in the immutablePostList to searchLivedata
 //                searchLiveData.value = postViewModel.immutablePostList.value //addAll(postViewModel.immutablePostList)
