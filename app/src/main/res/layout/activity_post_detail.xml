@@ -4,45 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/comment_bg"
+    android:background="@color/bg"
     android:padding="10dp"
     tools:context=".ui.PostDetailActivity">
 
-    <TextView
-        android:id="@+id/postTitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post Title"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:transitionName="title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/postBody1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post Body"
-        android:transitionName="body"
-        android:textSize="21sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postTitle1" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentsRecyclerView"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@id/btnMakeComment"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postBody1"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/postTitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Post Title"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:transitionName="title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/postBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Post Body"
+                android:textSize="21sp"
+                android:transitionName="body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postTitle1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postBody1" />
+
+            <TextView
+                android:id="@+id/addComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commentsRecyclerView"/>
+
+            <EditText
+                android:id="@+id/yourId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="9dp"
+                android:hint="Your Id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addComment" />
+
+            <EditText
+                android:id="@+id/yourEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:hint="Email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourId" />
+
+            <EditText
+                android:id="@+id/yourTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:hint="title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourEmail" />
+
+            <EditText
+                android:id="@+id/yourComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="9dp"
+                android:hint="comment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourTitle" />
+
+            <Button
+                android:id="@+id/btnAddComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourComment"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
     <ImageView
         android:id="@+id/btnMakeComment"
         android:layout_width="40dp"
@@ -52,47 +124,5 @@
         android:src="@drawable/ic_baseline_add_circle_outline_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-<!--    <EditText-->
-<!--        android:id="@+id/yourId"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginTop="9dp"-->
-<!--        android:layout_marginEnd="9dp"-->
-<!--        android:hint="Your Id"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/commentsRecyclerView" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/yourEmail"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:hint="Email"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/yourId" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/yourTitle"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:hint="title"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/yourEmail" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/yourComment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginEnd="9dp"-->
-<!--        android:hint="comment"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/yourTitle" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

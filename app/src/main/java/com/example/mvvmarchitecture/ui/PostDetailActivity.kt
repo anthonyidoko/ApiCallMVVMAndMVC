@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.adapetr.PostCommentsAdapter
+import com.example.mvvmarchitecture.data.CommentsDataClassItem
 import com.example.mvvmarchitecture.data.PostsDataClassItem
 import com.example.mvvmarchitecture.viewModel.PostsViewModel
 
@@ -20,6 +21,7 @@ class PostDetailActivity : AppCompatActivity() {
     lateinit var name :TextView
     lateinit var commentsRecyclerView : RecyclerView
     lateinit var postCommentsAdapter : PostCommentsAdapter
+    lateinit var commentList:ArrayList<CommentsDataClassItem>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +34,12 @@ class PostDetailActivity : AppCompatActivity() {
         val postTitle = findViewById<TextView>(R.id.postTitle1)
         val postBody = findViewById<TextView>(R.id.postBody1)
 
-//        btnMakeComment.setOnClickListener {
-//            val intent = Intent(this@PostDetailActivity, AddCommentActivity::class.java)
-//            startActivity(intent)
-//        }
+        //Initialize commentList
+        commentList = ArrayList()
+
+        btnMakeComment.setOnClickListener {
+
+        }
 
         val clickedItem = intent.getParcelableExtra<PostsDataClassItem>("EXTRA_DATA")
 
@@ -51,15 +55,21 @@ class PostDetailActivity : AppCompatActivity() {
         postViewModel.makeSecondAPICall(postId)
         postViewModel.immutableListCommentsLiveData.observe(this, Observer{
             if (it != null){
-                commentsRecyclerView.layoutManager = LinearLayoutManager(this)
-                postCommentsAdapter = PostCommentsAdapter(it)
-                commentsRecyclerView.adapter = postCommentsAdapter
-
+                commentList.addAll(it)
+                populateRecyclerView()
             } else{
                 Toast.makeText(this,"no data available",Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+    private fun populateRecyclerView(){
+        commentsRecyclerView.layoutManager = LinearLayoutManager(this)
+        postCommentsAdapter = PostCommentsAdapter(commentList)
+        commentsRecyclerView.adapter = postCommentsAdapter
+
+    }
+
 
 
 

@@ -147,29 +147,10 @@ class PostsActivity : AppCompatActivity(){
 
     private fun createPost(post : AddPostData){
         postViewModel.makeNewPost(post)
-        postViewModel.liveDataAddedPostList.observe(this, Observer {
-            if (it.isSuccessful){
-
-                //Add the new post to the posts recyclerView
-                val newPost = PostsDataClassItem(post.body,adapterList.size+1,post.title,11)
-                adapterList.add(newPost)
-//                searchArrayList.clear()
-                searchArrayList.addAll(adapterList)
-                populateRecyclerView()
-
-
-                Log.d("TAG", "initViewModel: ${adapterList[adapterList.size-1].body}")
-
-                Log.d("Post",it.body().toString())
-                Log.d("Post",it.message())
-                Log.d("Post",it.code().toString())
-            } else {
-                Log.d("Post","Failed Attempt")
-
-            }
-
-        })
-
+        val newPost = PostsDataClassItem(post.body,adapterList.size+1,post.title,11)
+        adapterList.add(newPost)
+        searchArrayList.addAll(adapterList)
+        populateRecyclerView()
     }
 
     private fun populateRecyclerView(){
