@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +32,7 @@ class PostsActivity : AppCompatActivity(){
     lateinit var postViewModel : PostsViewModel
     lateinit var searchArrayList :ArrayList<PostsDataClassItem>
     lateinit var adapterList :ArrayList<PostsDataClassItem>
+    lateinit var myProgressBar :ProgressBar
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,7 @@ class PostsActivity : AppCompatActivity(){
         val newPostTitle = findViewById<TextView>(R.id.newPostTitle)
         val myPostTitle = findViewById<EditText>(R.id.myPostTitle)
         val myPostBody = findViewById<EditText>(R.id.myPostBody)
+        myProgressBar = findViewById<ProgressBar>(R.id.myProgressBar)
 
 
         postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
@@ -57,7 +60,6 @@ class PostsActivity : AppCompatActivity(){
 
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
-
 
             btnAddPost.setOnClickListener {
                 //Set visibility of the views
@@ -133,6 +135,7 @@ class PostsActivity : AppCompatActivity(){
         postViewModel.makeAPICall()
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
+                myProgressBar.visibility = View.GONE
                 adapterList.addAll(it)
                 searchArrayList.addAll(adapterList)
                 Log.d("searchList", "initViewModel: $searchArrayList")
