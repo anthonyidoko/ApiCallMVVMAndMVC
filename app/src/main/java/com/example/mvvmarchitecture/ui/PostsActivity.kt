@@ -1,5 +1,6 @@
 package com.example.mvvmarchitecture.ui
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -26,9 +27,9 @@ import kotlin.collections.ArrayList
 
 class PostsActivity : AppCompatActivity(){
     lateinit var postsRecyclerViewAdapter: PostsRecyclerViewAdapter
-    lateinit var postsRecyclerView: RecyclerView
+    private lateinit var postsRecyclerView: RecyclerView
     lateinit var postViewModel : PostsViewModel
-    lateinit var searchLiveData :MutableLiveData<PostsDataClass>
+    lateinit var searchArrayList :ArrayList<PostsDataClassItem>
     lateinit var adapterList :ArrayList<PostsDataClassItem>
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,19 +45,19 @@ class PostsActivity : AppCompatActivity(){
         val myPostBody = findViewById<EditText>(R.id.myPostBody)
 
 
-        //Create an instance of the PostsViewModel class
-        postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
+        postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
 
-        populateRecyclerView()
+            initViewModel()
 
-        //Initialize the adapterList
-        adapterList = ArrayList()
+            //Initialize the adapterList
+            adapterList = ArrayList()
+
+            //Initialize the arrayList that holds the searched items value
+            searchArrayList = ArrayList()
 
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-            //Initialize the mutableLiveData that holds the searched items value
-            searchLiveData = MutableLiveData()
 
             btnAddPost.setOnClickListener {
                 //Set visibility of the views
@@ -71,7 +72,7 @@ class PostsActivity : AppCompatActivity(){
             btnCreatePost.setOnClickListener {
                 //Extract inputs from the edit text and store in variables
                 val post = AddPostData(
-                    11,adapterList.size,
+                    11,adapterList.size+1,
                     myPostTitle.text.toString(),
                     myPostBody.text.toString()
                 )
@@ -94,28 +95,30 @@ class PostsActivity : AppCompatActivity(){
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_item,menu)
+
+        //Reference the menu item
         val item = menu?.findItem(R.id.mySearchAction)
         val searchView = item?.actionView as SearchView
         searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
+                return true
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchLiveData.value?.clear()
-                val searchText = newText?.toLowerCase(Locale.getDefault())
+                searchArrayList.clear()
+                val searchText = newText?.lowercase(Locale.getDefault())
                 if (searchText!!.isNotEmpty()){
-                    postViewModel.immutablePostList.value?.forEach {
-                        if (it.body.toLowerCase(Locale.getDefault()).contains(searchText)){
-                            searchLiveData.value?.add(it)
+                    adapterList.forEach {
+                        if (it.body.lowercase(Locale.getDefault()).contains(searchText)){
+                            searchArrayList.add(it)
                         }
-
                     }
 
                     postsRecyclerViewAdapter.notifyDataSetChanged()
                 }else{
-                    searchLiveData.value?.clear()
-                    postViewModel.immutablePostList.value?.let { searchLiveData.value?.addAll(it) }
+                    searchArrayList.clear()
+                    adapterList.let { searchArrayList.addAll(it) }
                     postsRecyclerViewAdapter.notifyDataSetChanged()
                 }
 
@@ -126,43 +129,22 @@ class PostsActivity : AppCompatActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
-    //Fetch data from api and display on recyclerView
-    private fun populateRecyclerView(){
+    private fun initViewModel(){
         postViewModel.makeAPICall()
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
-
-                //Populate adapterList
                 adapterList.addAll(it)
-
-                postsRecyclerViewAdapter.setUpdateData(adapterList)
-                postsRecyclerView.adapter = postsRecyclerViewAdapter
-
-                //Set click listener on recyclerView items
-                postsRecyclerViewAdapter.setOnPostClickListener(
-                    object : PostsRecyclerViewAdapter.OnPostClick{
-                    override fun onPostClickListener(position: Int, view: View) {
-                        val title = view.findViewById<TextView>(R.id.postTitle)
-                        val body = view.findViewById<TextView>(R.id.postBody)
-                        val options = ActivityOptions.makeSceneTransitionAnimation(
-                            this@PostsActivity,
-                            Pair.create(title, "title"),
-                            Pair.create(body, "body"))
-                        val clickedItem:PostsDataClassItem = postsRecyclerViewAdapter.postList[position]
-                        val intent = Intent(this@PostsActivity, PostDetailActivity::class.java)
-                        intent.putExtra("EXTRA_DATA", clickedItem)
-                        startActivity(intent,options.toBundle())
-                    }
-                })
-
+                searchArrayList.addAll(adapterList)
+                Log.d("searchList", "initViewModel: $searchArrayList")
             }else{
                 Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show()
             }
+            populateRecyclerView()
+            recyclerViewClickListener()
         })
 
     }
 
-    //Create new post
     private fun createPost(post : AddPostData){
         postViewModel.makeNewPost(post)
         postViewModel.liveDataAddedPostList.observe(this, Observer {
@@ -171,15 +153,45 @@ class PostsActivity : AppCompatActivity(){
                 //Add the new post to the posts recyclerView
                 val newPost = PostsDataClassItem(post.body,adapterList.size+1,post.title,11)
                 adapterList.add(newPost)
-                postsRecyclerViewAdapter.setUpdateData(adapterList)
+//                searchArrayList.clear()
+                searchArrayList.addAll(adapterList)
+                populateRecyclerView()
 
+
+                Log.d("TAG", "initViewModel: ${adapterList[adapterList.size-1].body}")
+
+                Log.d("Post",it.body().toString())
+                Log.d("Post",it.message())
+                Log.d("Post",it.code().toString())
             } else {
-                Toast.makeText(this,"Failed Attempt",Toast.LENGTH_SHORT).show()
+                Log.d("Post","Failed Attempt")
 
             }
 
         })
 
+    }
+
+    private fun populateRecyclerView(){
+        postsRecyclerViewAdapter.setUpdateData(searchArrayList)
+        postsRecyclerView.adapter = postsRecyclerViewAdapter
+    }
+
+    private fun recyclerViewClickListener(){
+        postsRecyclerViewAdapter.setOnPostClickListener(object : PostsRecyclerViewAdapter.OnPostClick{
+            override fun onPostClickListener(position: Int, view: View) {
+                val title = view.findViewById<TextView>(R.id.postTitle)
+                val body = view.findViewById<TextView>(R.id.postBody)
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this@PostsActivity,
+                    Pair.create(title, "title"),
+                    Pair.create(body, "body"))
+                val clickedItem:PostsDataClassItem = postsRecyclerViewAdapter.postList[position]
+                val intent = Intent(this@PostsActivity, PostDetailActivity::class.java)
+                intent.putExtra("EXTRA_DATA", clickedItem)
+                startActivity(intent,options.toBundle())
+            }
+        })
     }
 
 }
