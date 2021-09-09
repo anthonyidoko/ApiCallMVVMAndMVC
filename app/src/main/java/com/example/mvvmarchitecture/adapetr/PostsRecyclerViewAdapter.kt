@@ -22,7 +22,7 @@ class PostsRecyclerViewAdapter() : RecyclerView.Adapter<PostsRecyclerViewAdapter
     }
 
     inner class ViewHolder(view : View,listener :OnPostClick) :RecyclerView.ViewHolder(view){
-        val postId :TextView = view.findViewById(R.id.postId)
+//        val postId :TextView = view.findViewById(R.id.postId)
         val postTitle :TextView = view.findViewById(R.id.postTitle)
         val postBody :TextView = view.findViewById(R.id.postBody)
 
@@ -53,7 +53,7 @@ class PostsRecyclerViewAdapter() : RecyclerView.Adapter<PostsRecyclerViewAdapter
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentPost = postList[position]
-        holder.postId.text = currentPost.id. toString()
+//        holder.postId.text = currentPost.id. toString()
         holder.postTitle.text = currentPost.title
         holder.postBody.text = """ 
                   

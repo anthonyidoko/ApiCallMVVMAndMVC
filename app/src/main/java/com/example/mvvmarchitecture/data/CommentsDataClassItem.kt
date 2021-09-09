@@ -2,9 +2,9 @@ package com.example.mvvmarchitecture.data
 
 
 data class CommentsDataClassItem(
-    val body: String,
-    val email: String,
-    val id: Int,
-    val name: String,
+    var body: String,
+    var email: String,
+    var id: Int,
+    var name: String,
     val postId: Int
 )

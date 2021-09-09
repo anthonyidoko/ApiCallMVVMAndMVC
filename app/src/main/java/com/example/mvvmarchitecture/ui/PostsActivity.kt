@@ -33,6 +33,12 @@ class PostsActivity : AppCompatActivity(){
     lateinit var searchArrayList :ArrayList<PostsDataClassItem>
     lateinit var adapterList :ArrayList<PostsDataClassItem>
     lateinit var myProgressBar :ProgressBar
+    private lateinit var btnAddPost :ImageView
+    lateinit var btnCreatePost :Button
+    private lateinit var newPostTitle :TextView
+    private lateinit var myPostTitle :EditText
+    private lateinit var myPostBody :EditText
+
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +46,15 @@ class PostsActivity : AppCompatActivity(){
 
         //Get reference to all views in the layout
         postsRecyclerView = findViewById(R.id.postsRecyclerView)
-        val btnAddPost = findViewById<ImageView>(R.id.btnAddPost)
-        val btnCreatePost = findViewById<Button>(R.id.btnCreatePost)
-        val newPostTitle = findViewById<TextView>(R.id.newPostTitle)
-        val myPostTitle = findViewById<EditText>(R.id.myPostTitle)
-        val myPostBody = findViewById<EditText>(R.id.myPostBody)
-        myProgressBar = findViewById<ProgressBar>(R.id.myProgressBar)
+        btnAddPost = findViewById(R.id.btnAddPost)
+        btnCreatePost = findViewById(R.id.btnCreatePost)
+        newPostTitle = findViewById(R.id.newPostTitle)
+        myPostTitle = findViewById(R.id.myPostTitle)
+        myPostBody = findViewById(R.id.myPostBody)
+        myProgressBar = findViewById(R.id.myProgressBar)
 
 
-        postViewModel = ViewModelProvider(this).get(PostsViewModel::class.java)
+        postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
 
             initViewModel()
 
@@ -61,15 +67,7 @@ class PostsActivity : AppCompatActivity(){
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-            btnAddPost.setOnClickListener {
-                //Set visibility of the views
-                btnCreatePost.visibility = View.VISIBLE
-                newPostTitle.visibility = View.VISIBLE
-                myPostTitle.visibility = View.VISIBLE
-                myPostBody.visibility = View.VISIBLE
-                myPostTitle.requestFocus()
-                btnAddPost.visibility = View.GONE
-            }
+            setClickListenerOnBtnAddPost()
 
             btnCreatePost.setOnClickListener {
                 //Extract inputs from the edit text and store in variables
@@ -81,16 +79,8 @@ class PostsActivity : AppCompatActivity(){
 
                 //Create Post
                 createPost(post)
-                //Set visibility of the views
-                btnAddPost.visibility = View.VISIBLE
-                btnCreatePost.visibility = View.GONE
-                newPostTitle.visibility = View.GONE
-                myPostTitle.visibility = View.GONE
-                myPostBody.visibility = View.GONE
+                setVisibilityForViews()
 
-                //Clear text input in the editText fields
-                myPostTitle.text.clear()
-                myPostBody.text.clear()
             }
 
     }
@@ -176,6 +166,33 @@ class PostsActivity : AppCompatActivity(){
                 startActivity(intent,options.toBundle())
             }
         })
+    }
+
+    private fun setVisibilityForViews(){
+        //Set visibility of the views
+        btnAddPost.visibility = View.VISIBLE
+        btnCreatePost.visibility = View.GONE
+        newPostTitle.visibility = View.GONE
+        myPostTitle.visibility = View.GONE
+        myPostBody.visibility = View.GONE
+
+        //Clear text input in the editText fields
+        myPostTitle.text.clear()
+        myPostBody.text.clear()
+    }
+
+    //Set click for addPost button
+    private fun setClickListenerOnBtnAddPost(){
+        btnAddPost.setOnClickListener {
+            //Set visibility of the views
+            btnCreatePost.visibility = View.VISIBLE
+            newPostTitle.visibility = View.VISIBLE
+            myPostTitle.visibility = View.VISIBLE
+            myPostBody.visibility = View.VISIBLE
+            myPostTitle.requestFocus()
+            btnAddPost.visibility = View.GONE
+        }
+
     }
 
 }
