@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MVVMArchitecture</string>
+    <string name="internet">There is currently no internet service. Please turn on internet</string>
 </resources>

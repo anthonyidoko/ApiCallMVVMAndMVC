@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.adapetr.PostsRecyclerViewAdapter
+import com.example.mvvmarchitecture.connectivity.ConnectivityLiveData
 import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClass
 import com.example.mvvmarchitecture.data.PostsDataClassItem
@@ -29,7 +30,7 @@ import kotlin.collections.ArrayList
 class PostsActivity : AppCompatActivity(){
     lateinit var postsRecyclerViewAdapter: PostsRecyclerViewAdapter
     private lateinit var postsRecyclerView: RecyclerView
-    lateinit var postViewModel : PostsViewModel
+    private lateinit var postViewModel : PostsViewModel
     lateinit var searchArrayList :ArrayList<PostsDataClassItem>
     lateinit var adapterList :ArrayList<PostsDataClassItem>
     lateinit var myProgressBar :ProgressBar
@@ -38,6 +39,8 @@ class PostsActivity : AppCompatActivity(){
     private lateinit var newPostTitle :TextView
     private lateinit var myPostTitle :EditText
     private lateinit var myPostBody :EditText
+    private lateinit var connectivityLiveData: ConnectivityLiveData
+    lateinit var internetText :TextView
 
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +55,13 @@ class PostsActivity : AppCompatActivity(){
         myPostTitle = findViewById(R.id.myPostTitle)
         myPostBody = findViewById(R.id.myPostBody)
         myProgressBar = findViewById(R.id.myProgressBar)
+        connectivityLiveData = ConnectivityLiveData(this.application)
+        internetText = findViewById(R.id.internetText)
 
 
         postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
 
+            checkForNetwork()
             initViewModel()
 
             //Initialize the adapterList
@@ -123,6 +129,7 @@ class PostsActivity : AppCompatActivity(){
 
     private fun initViewModel(){
         postViewModel.makeAPICall()
+
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
                 myProgressBar.visibility = View.GONE
@@ -149,6 +156,22 @@ class PostsActivity : AppCompatActivity(){
     private fun populateRecyclerView(){
         postsRecyclerViewAdapter.setUpdateData(searchArrayList)
         postsRecyclerView.adapter = postsRecyclerViewAdapter
+    }
+
+    private fun checkForNetwork(){
+        connectivityLiveData.observe(this, Observer{isAvailable->
+            when (isAvailable) {
+                true -> {
+                    postsRecyclerView.visibility = View.VISIBLE
+                    internetText.visibility = View.GONE
+                }
+                false -> {
+                    postsRecyclerView.visibility = View.GONE
+                    internetText.visibility = View.VISIBLE
+                }
+            }
+
+        })
     }
 
     private fun recyclerViewClickListener(){
