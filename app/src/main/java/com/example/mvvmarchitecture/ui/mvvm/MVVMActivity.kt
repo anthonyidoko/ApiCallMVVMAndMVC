@@ -128,6 +128,7 @@ class MVVMActivity : AppCompatActivity(){
         postViewModel.immutablePostList.observe(this, Observer <PostsDataClass>{
             if (it != null){
                 myProgressBar.visibility = View.GONE
+                btnAddPost.visibility = View.VISIBLE
                 adapterList.addAll(it)
                 searchArrayList.addAll(adapterList)
                 Log.d("searchList", "initViewModel: $searchArrayList")

@@ -33,10 +33,6 @@ class MVCActivity : AppCompatActivity() {
     lateinit var adapterList :ArrayList<PostsDataClassItem>
     lateinit var myProgressBar : ProgressBar
     private lateinit var btnAddPost : ImageView
-//    lateinit var btnCreatePost : Button
-    private lateinit var newPostTitle :TextView
-    private lateinit var myPostTitle : EditText
-    private lateinit var myPostBody : EditText
     private lateinit var connectivityLiveData: ConnectivityLiveData
     lateinit var internetText :TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +42,6 @@ class MVCActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.postsRecyclerView)
         btnAddPost = findViewById(R.id.btnAddPost)
-//        btnCreatePost = findViewById(R.id.btnCreatePost)
-//        newPostTitle = findViewById(R.id.newPostTitle)
-//        myPostTitle = findViewById(R.id.myPostTitle)
-//        myPostBody = findViewById(R.id.myPostBody)
         myProgressBar = findViewById(R.id.myProgressBar)
         connectivityLiveData = ConnectivityLiveData(this.application)
         internetText = findViewById(R.id.internetText)
@@ -67,19 +59,11 @@ class MVCActivity : AppCompatActivity() {
         //Call btnAddPost click listener method
         setClickListenerOnBtnAddPost()
 
-        //Set click listener on btnCreatePost
-//        btnCreatePost.setOnClickListener {
-//            //Extract inputs from the edit text and store in variables
-//            val post = AddPostData(
-//                11,adapterList.size+1,
-//                myPostTitle.text.toString(),
-//                myPostBody.text.toString()
-//            )
+        setVisibilityForViews()
 
-            //Create new Post
-//            createPost(post)
-            setVisibilityForViews()
-//        }
+        //Set visibility for btnAddPost
+        btnAddPost.visibility = View.GONE
+
         // Add new Post to adapterList
         val postBody = intent.getParcelableExtra<PostsDataClassItem>("EXTRA_DATA")
         if (postBody != null) {
@@ -141,6 +125,7 @@ class MVCActivity : AppCompatActivity() {
                 //Call the populateAdapter method
                 populateAdapter(searchArrayList)
                 myProgressBar.visibility = View.GONE
+                btnAddPost.visibility = View.VISIBLE
 
             }
 
@@ -179,14 +164,7 @@ class MVCActivity : AppCompatActivity() {
     private fun setVisibilityForViews(){
         //Set visibility of the views
         btnAddPost.visibility = View.VISIBLE
-//        btnCreatePost.visibility = View.GONE
-//        newPostTitle.visibility = View.GONE
-//        myPostTitle.visibility = View.GONE
-//        myPostBody.visibility = View.GONE
 
-        //Clear text input in the editText fields
-//        myPostTitle.text.clear()
-//        myPostBody.text.clear()
     }
 
     //Set click for addPost button
@@ -194,13 +172,6 @@ class MVCActivity : AppCompatActivity() {
         btnAddPost.setOnClickListener {
             val intent = Intent(this, MVCAddPostActivity::class.java)
             startActivity(intent)
-//            //Set visibility of the views
-//            btnCreatePost.visibility = View.VISIBLE
-//            newPostTitle.visibility = View.VISIBLE
-//            myPostTitle.visibility = View.VISIBLE
-//            myPostBody.visibility = View.VISIBLE
-//            myPostTitle.requestFocus()
-//            btnAddPost.visibility = View.GONE
         }
 
     }
