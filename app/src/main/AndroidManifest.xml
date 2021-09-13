@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVVMArchitecture">
         <activity
+            android:name=".ui.MVCAddPostActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.AddCommentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.AddPostActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.MVCActivity"
             android:exported="true" />
         <activity
@@ -23,9 +32,6 @@
             android:exported="true" />
         <activity
             android:name=".ui.PostsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.AddCommentActivity"
             android:exported="true" />
         <activity
             android:name=".ui.MainActivity"

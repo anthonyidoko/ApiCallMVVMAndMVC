@@ -64,14 +64,13 @@ class PostsViewModel :ViewModel() {
 
     }
 
-    fun populatePostsArrayList(){
-        if (immutablePostsArrayList.value!!.isNotEmpty()){
-            immutablePostList.value?.forEach {post ->
-                searchLiveDataList.add(post)
-            }
-        }
-    }
-
+//    fun populatePostsArrayList(){
+//        if (immutablePostsArrayList.value!!.isNotEmpty()){
+//            immutablePostList.value?.forEach {post ->
+//                searchLiveDataList.add(post)
+//            }
+//        }
+//    }
 
 }
 

@@ -28,6 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class PostsActivity : AppCompatActivity(){
+
     lateinit var postsRecyclerViewAdapter: PostsRecyclerViewAdapter
     private lateinit var postsRecyclerView: RecyclerView
     private lateinit var postViewModel : PostsViewModel
@@ -35,7 +36,6 @@ class PostsActivity : AppCompatActivity(){
     lateinit var adapterList :ArrayList<PostsDataClassItem>
     lateinit var myProgressBar :ProgressBar
     private lateinit var btnAddPost :ImageView
-    lateinit var btnCreatePost :Button
     private lateinit var newPostTitle :TextView
     private lateinit var myPostTitle :EditText
     private lateinit var myPostBody :EditText
@@ -50,10 +50,6 @@ class PostsActivity : AppCompatActivity(){
         //Get reference to all views in the layout
         postsRecyclerView = findViewById(R.id.postsRecyclerView)
         btnAddPost = findViewById(R.id.btnAddPost)
-        btnCreatePost = findViewById(R.id.btnCreatePost)
-        newPostTitle = findViewById(R.id.newPostTitle)
-        myPostTitle = findViewById(R.id.myPostTitle)
-        myPostBody = findViewById(R.id.myPostBody)
         myProgressBar = findViewById(R.id.myProgressBar)
         connectivityLiveData = ConnectivityLiveData(this.application)
         internetText = findViewById(R.id.internetText)
@@ -61,33 +57,32 @@ class PostsActivity : AppCompatActivity(){
 
         postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
 
-            checkForNetwork()
-            initViewModel()
+        //Call the network checker
+        checkForNetwork()
 
-            //Initialize the adapterList
-            adapterList = ArrayList()
+        //call the network calling function
+        initViewModel()
 
-            //Initialize the arrayList that holds the searched items value
-            searchArrayList = ArrayList()
+        //Initialize the adapterList
+        adapterList = ArrayList()
+
+        //Initialize the arrayList that holds the searched items value
+        searchArrayList = ArrayList()
 
         postsRecyclerViewAdapter = PostsRecyclerViewAdapter()
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-            setClickListenerOnBtnAddPost()
-
-            btnCreatePost.setOnClickListener {
-                //Extract inputs from the edit text and store in variables
-                val post = AddPostData(
-                    11,adapterList.size+1,
-                    myPostTitle.text.toString(),
-                    myPostBody.text.toString()
-                )
-
-                //Create Post
-                createPost(post)
-                setVisibilityForViews()
-
+            btnAddPost.setOnClickListener {
+                val intent = Intent(this, AddPostActivity::class.java)
+                startActivity(intent)
             }
+
+
+        // Add new Post to adapterList
+        val postBody = intent.getParcelableExtra<PostsDataClassItem>("POST_DATA")
+        if (postBody != null) {
+            adapterList.add(postBody)
+        }
 
     }
 
@@ -127,6 +122,7 @@ class PostsActivity : AppCompatActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
+    //Make the api call and observe your livedata
     private fun initViewModel(){
         postViewModel.makeAPICall()
 
@@ -145,6 +141,7 @@ class PostsActivity : AppCompatActivity(){
 
     }
 
+    //Create a new Post
     private fun createPost(post : AddPostData){
         postViewModel.makeNewPost(post)
         val newPost = PostsDataClassItem(post.body,adapterList.size+1,post.title,11)
@@ -153,11 +150,13 @@ class PostsActivity : AppCompatActivity(){
         populateRecyclerView()
     }
 
+    //Populate the recyclerView adapter
     private fun populateRecyclerView(){
         postsRecyclerViewAdapter.setUpdateData(searchArrayList)
         postsRecyclerView.adapter = postsRecyclerViewAdapter
     }
 
+    //Check for network availability
     private fun checkForNetwork(){
         connectivityLiveData.observe(this, Observer{isAvailable->
             when (isAvailable) {
@@ -174,6 +173,7 @@ class PostsActivity : AppCompatActivity(){
         })
     }
 
+    //Set Click listener on recyclerView
     private fun recyclerViewClickListener(){
         postsRecyclerViewAdapter.setOnPostClickListener(object : PostsRecyclerViewAdapter.OnPostClick{
             override fun onPostClickListener(position: Int, view: View) {
@@ -191,10 +191,10 @@ class PostsActivity : AppCompatActivity(){
         })
     }
 
+    //Set visibility for the various views in layout
     private fun setVisibilityForViews(){
         //Set visibility of the views
         btnAddPost.visibility = View.VISIBLE
-        btnCreatePost.visibility = View.GONE
         newPostTitle.visibility = View.GONE
         myPostTitle.visibility = View.GONE
         myPostBody.visibility = View.GONE
@@ -207,15 +207,9 @@ class PostsActivity : AppCompatActivity(){
     //Set click for addPost button
     private fun setClickListenerOnBtnAddPost(){
         btnAddPost.setOnClickListener {
-            //Set visibility of the views
-            btnCreatePost.visibility = View.VISIBLE
-            newPostTitle.visibility = View.VISIBLE
-            myPostTitle.visibility = View.VISIBLE
-            myPostBody.visibility = View.VISIBLE
-            myPostTitle.requestFocus()
-            btnAddPost.visibility = View.GONE
+            val intent = Intent(this, AddPostActivity::class.java)
+            startActivity(intent)
         }
-
     }
 
 }

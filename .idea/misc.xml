@@ -7,8 +7,10 @@
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.11481481481481481" />
         <entry key="app/src/main/res/layout/activity_add_comment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_post.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_add_post2.xml" value="0.26200204290091933" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/activity_mvcactivity.xml" value="0.234375" />
+        <entry key="app/src/main/res/layout/activity_mvcadd_post.xml" value="0.26200204290091933" />
         <entry key="app/src/main/res/layout/activity_post_detail.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_posts_actvivity.xml" value="0.18" />
         <entry key="app/src/main/res/layout/post_detail_item.xml" value="0.28177083333333336" />

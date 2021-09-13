@@ -12,7 +12,6 @@ import com.example.mvvmarchitecture.data.PostsDataClassItem
 
 class PostsRecyclerViewAdapter() : RecyclerView.Adapter<PostsRecyclerViewAdapter.ViewHolder>() {
 
-
     lateinit var listener :OnPostClick
     var postList = ArrayList<PostsDataClassItem>()
 

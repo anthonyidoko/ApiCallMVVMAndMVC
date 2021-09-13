@@ -1,6 +1,7 @@
 package com.example.mvvmarchitecture.network
 
 import com.example.mvvmarchitecture.data.*
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -21,4 +22,14 @@ interface RetrofitService {
     //Make a new post
     @POST("posts")
     suspend fun makePost(@Body post : AddPostData) : Response<AddPostData>
+
+
+    //MVC Implementation
+
+    @GET("posts")
+    fun getAllPosts() :Call<ArrayList<PostsDataClassItem>>
+
+    //Make a new post
+    @POST("posts")
+    fun makeNewPost(@Body post : AddPostData) : Call<AddPostData>
 }

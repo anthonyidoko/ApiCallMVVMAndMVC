@@ -3,6 +3,7 @@ package com.example.mvvmarchitecture.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
@@ -59,10 +60,20 @@ class PostDetailActivity : AppCompatActivity() {
         val name =  postTitle.text.toString()
         val id =  clickedItem?.id.toString()
 
-        val newComment = CommentsDataClassItem(body,email,commentList.size,name,id.toInt())
+
+//        val newComment = CommentsDataClassItem(body,email,commentList.size,name,id.toInt())
 
         setClickListenerOnMakeCommentImageView()
-        setClickListenerOnAddCommentButton(newComment)
+//        setClickListenerOnAddCommentButton(newComment)
+        btnAddComment.setOnClickListener {
+            val newComment = CommentsDataClassItem(
+                body,email,commentList.size,name,id.toInt()
+            )
+            commentList.add(newComment)
+            Log.d("addedComment", "onCreate: ${commentList[commentList.size-1]}")
+            PostCommentsAdapter(commentList).notifyDataSetChanged()
+            setVisibilityForViews(false)
+        }
 
 
         postBody.text = clickedItem?.body
@@ -90,6 +101,7 @@ class PostDetailActivity : AppCompatActivity() {
         commentsRecyclerView.layoutManager = LinearLayoutManager(this)
         postCommentsAdapter = PostCommentsAdapter(commentList)
         commentsRecyclerView.adapter = postCommentsAdapter
+        postCommentsAdapter.notifyDataSetChanged()
 
     }
 
@@ -101,16 +113,16 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     //Set click listener on add comments button
-    private fun setClickListenerOnAddCommentButton(comment :CommentsDataClassItem){
-        btnAddComment.setOnClickListener {
-            val newComment = CommentsDataClassItem(
-                comment.body,comment.email,comment.id,
-                comment.name,comment.postId
-            )
-            commentList.add(newComment)
-            setVisibilityForViews(false)
-        }
-    }
+//    private fun setClickListenerOnAddCommentButton(comment :CommentsDataClassItem){
+//        btnAddComment.setOnClickListener {
+//            val newComment = CommentsDataClassItem(
+//                comment.body,comment.email,comment.id,
+//                comment.name,comment.postId
+//            )
+//            commentList.add(newComment)
+//            setVisibilityForViews(false)
+//        }
+//    }
 
     //Set Visibility on Views
     private fun setVisibilityForViews(state :Boolean){
