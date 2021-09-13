@@ -1,10 +1,9 @@
-package com.example.mvvmarchitecture.ui
+package com.example.mvvmarchitecture.ui.mvc
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClassItem
 import com.example.mvvmarchitecture.databinding.ActivityMvcaddPostBinding

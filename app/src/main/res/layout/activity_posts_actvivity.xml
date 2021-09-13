@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="@color/bg"
-    tools:context=".ui.PostsActivity">
+    tools:context=".ui.mvvm.MVVMActivity">
 
     <TextView
         android:id="@+id/title"

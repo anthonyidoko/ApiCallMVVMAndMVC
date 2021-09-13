@@ -1,4 +1,4 @@
-package com.example.mvvmarchitecture.ui
+package com.example.mvvmarchitecture.ui.mvvm
 
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
@@ -11,8 +11,6 @@ import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +21,12 @@ import com.example.mvvmarchitecture.connectivity.ConnectivityLiveData
 import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClass
 import com.example.mvvmarchitecture.data.PostsDataClassItem
+import com.example.mvvmarchitecture.ui.PostDetailActivity
 import com.example.mvvmarchitecture.viewModel.PostsViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PostsActivity : AppCompatActivity(){
+class MVVMActivity : AppCompatActivity(){
 
     lateinit var postsRecyclerViewAdapter: PostsRecyclerViewAdapter
     private lateinit var postsRecyclerView: RecyclerView
@@ -73,7 +72,7 @@ class PostsActivity : AppCompatActivity(){
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
 
             btnAddPost.setOnClickListener {
-                val intent = Intent(this, AddPostActivity::class.java)
+                val intent = Intent(this, MVVMAddPostActivity::class.java)
                 startActivity(intent)
             }
 
@@ -180,11 +179,11 @@ class PostsActivity : AppCompatActivity(){
                 val title = view.findViewById<TextView>(R.id.postTitle)
                 val body = view.findViewById<TextView>(R.id.postBody)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this@PostsActivity,
+                    this@MVVMActivity,
                     Pair.create(title, "title"),
                     Pair.create(body, "body"))
                 val clickedItem:PostsDataClassItem = postsRecyclerViewAdapter.postList[position]
-                val intent = Intent(this@PostsActivity, PostDetailActivity::class.java)
+                val intent = Intent(this@MVVMActivity, PostDetailActivity::class.java)
                 intent.putExtra("EXTRA_DATA", clickedItem)
                 startActivity(intent,options.toBundle())
             }
@@ -207,7 +206,7 @@ class PostsActivity : AppCompatActivity(){
     //Set click for addPost button
     private fun setClickListenerOnBtnAddPost(){
         btnAddPost.setOnClickListener {
-            val intent = Intent(this, AddPostActivity::class.java)
+            val intent = Intent(this, MVVMAddPostActivity::class.java)
             startActivity(intent)
         }
     }

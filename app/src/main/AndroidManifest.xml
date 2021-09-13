@@ -13,25 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVVMArchitecture">
         <activity
-            android:name=".ui.MVCAddPostActivity"
+            android:name=".ui.mvc.MVCAddPostActivity"
             android:exported="true" />
         <activity
             android:name=".ui.AddCommentActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.AddPostActivity"
+            android:name=".ui.mvvm.MVVMAddPostActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.MVCActivity"
+            android:name=".ui.mvc.MVCActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.AddPostActivity"
+            android:name=".ui.mvvm.MVVMAddPostActivity"
             android:exported="true" />
         <activity
             android:name=".ui.PostDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.PostsActivity"
+            android:name=".ui.mvvm.MVVMActivity"
             android:exported="true" />
         <activity
             android:name=".ui.MainActivity"

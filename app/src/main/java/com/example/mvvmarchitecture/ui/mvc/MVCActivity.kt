@@ -1,4 +1,4 @@
-package com.example.mvvmarchitecture.ui
+package com.example.mvvmarchitecture.ui.mvc
 
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
@@ -11,8 +11,6 @@ import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
@@ -20,9 +18,8 @@ import com.example.mvvmarchitecture.adapetr.PostsRecyclerViewAdapter
 import com.example.mvvmarchitecture.connectivity.ConnectivityLiveData
 import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClassItem
-import com.example.mvvmarchitecture.databinding.ActivityMvcactivityBinding
-import com.example.mvvmarchitecture.databinding.ActivityPostsActvivityBinding
 import com.example.mvvmarchitecture.network.RetrofitClient
+import com.example.mvvmarchitecture.ui.PostDetailActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

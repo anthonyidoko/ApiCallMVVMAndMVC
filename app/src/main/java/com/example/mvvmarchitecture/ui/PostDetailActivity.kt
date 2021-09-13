@@ -55,31 +55,23 @@ class PostDetailActivity : AppCompatActivity() {
 
         val clickedItem = intent.getParcelableExtra<PostsDataClassItem>("EXTRA_DATA")
 
-        val body =  postBody.text.toString()
-        val email =  yourEmail.text.toString()
-        val name =  postTitle.text.toString()
+
         val id =  clickedItem?.id.toString()
-
-
-//        val newComment = CommentsDataClassItem(body,email,commentList.size,name,id.toInt())
 
         setClickListenerOnMakeCommentImageView()
 //        setClickListenerOnAddCommentButton(newComment)
         btnAddComment.setOnClickListener {
-            val newComment = CommentsDataClassItem(
-                body,email,commentList.size,name,id.toInt()
-            )
+            val body =  yourComment.text.toString()
+            val email =  yourEmail.text.toString()
+            val name =  yourTitle.text.toString()
+            //create comment object
+            val newComment = CommentsDataClassItem(body,email,commentList.size,name,id.toInt())
             commentList.add(newComment)
-            Log.d("addedComment", "onCreate: ${commentList[commentList.size-1]}")
-            PostCommentsAdapter(commentList).notifyDataSetChanged()
             setVisibilityForViews(false)
         }
-
-
         postBody.text = clickedItem?.body
         postTitle.text = clickedItem?.title
         initViewModel(id)
-
     }
 
 
@@ -101,8 +93,6 @@ class PostDetailActivity : AppCompatActivity() {
         commentsRecyclerView.layoutManager = LinearLayoutManager(this)
         postCommentsAdapter = PostCommentsAdapter(commentList)
         commentsRecyclerView.adapter = postCommentsAdapter
-        postCommentsAdapter.notifyDataSetChanged()
-
     }
 
     //Set click listener on make comments imageView
@@ -111,18 +101,6 @@ class PostDetailActivity : AppCompatActivity() {
             setVisibilityForViews(true)
         }
     }
-
-    //Set click listener on add comments button
-//    private fun setClickListenerOnAddCommentButton(comment :CommentsDataClassItem){
-//        btnAddComment.setOnClickListener {
-//            val newComment = CommentsDataClassItem(
-//                comment.body,comment.email,comment.id,
-//                comment.name,comment.postId
-//            )
-//            commentList.add(newComment)
-//            setVisibilityForViews(false)
-//        }
-//    }
 
     //Set Visibility on Views
     private fun setVisibilityForViews(state :Boolean){
@@ -148,6 +126,5 @@ class PostDetailActivity : AppCompatActivity() {
         postTitle.visibility = View.VISIBLE
         btnMakeComment.visibility = View.VISIBLE
     }
-
 
 }

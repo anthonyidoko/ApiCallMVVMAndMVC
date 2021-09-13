@@ -1,16 +1,15 @@
-package com.example.mvvmarchitecture.ui
+package com.example.mvvmarchitecture.ui.mvvm
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.AddPostData
 import com.example.mvvmarchitecture.data.PostsDataClassItem
 import com.example.mvvmarchitecture.databinding.ActivityAddPost2Binding
 import com.example.mvvmarchitecture.viewModel.PostsViewModel
 
-class AddPostActivity : AppCompatActivity() {
+class MVVMAddPostActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPost2Binding
     lateinit var viewModel :PostsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class AddPostActivity : AppCompatActivity() {
     private fun createPost(post : AddPostData){
         viewModel.makeNewPost(post)
         val myPost = PostsDataClassItem(post.body,101,post.title,11)
-        val intent = Intent(this, PostsActivity::class.java)
+        val intent = Intent(this, MVVMActivity::class.java)
         intent.putExtra("POST_DATA",myPost)
         startActivity(intent)
     }

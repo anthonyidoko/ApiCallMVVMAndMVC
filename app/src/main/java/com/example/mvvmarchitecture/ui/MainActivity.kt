@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.mvvmarchitecture.R
+import com.example.mvvmarchitecture.ui.mvc.MVCActivity
+import com.example.mvvmarchitecture.ui.mvvm.MVVMActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         val btnMVC :Button = findViewById(R.id.mvc)
 
         mvvmbtn.setOnClickListener {
-            val intent = Intent(this, PostsActivity::class.java)
+            val intent = Intent(this, MVVMActivity::class.java)
             startActivity(intent)
         }
 
