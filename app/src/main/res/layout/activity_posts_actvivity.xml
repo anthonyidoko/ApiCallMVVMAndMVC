@@ -10,14 +10,13 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Posts"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:background="@color/white"
+        android:textColor="@color/white"
         android:textAllCaps="true"
-        android:textSize="35sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

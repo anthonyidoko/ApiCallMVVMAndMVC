@@ -53,7 +53,6 @@ class MVVMActivity : AppCompatActivity(){
         connectivityLiveData = ConnectivityLiveData(this.application)
         internetText = findViewById(R.id.internetText)
 
-
         postViewModel = ViewModelProvider(this)[PostsViewModel::class.java]
 
         //Call the network checker

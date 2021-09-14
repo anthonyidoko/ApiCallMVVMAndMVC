@@ -8,9 +8,9 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:cardBackgroundColor="@color/bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,10 +24,11 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/emptyImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_baseline_person_24"
-                app:layout_constraintBottom_toTopOf="@+id/commentTitle"
+                app:layout_constraintBottom_toTopOf="@+id/commentBody"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,14 +43,13 @@
 
             <TextView
                 android:id="@+id/commentTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="commentator title"
                 android:textColor="@color/topic_text"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="15sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/emptyImage"
                 app:layout_constraintBottom_toTopOf="@+id/commentBody" />
 
             <TextView
@@ -58,9 +58,9 @@
                 android:layout_height="wrap_content"
                 android:text="Post Comments"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/commentTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/emptyImage" />
 
             <TextView
                 android:id="@+id/email"
@@ -68,8 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="commentator's email"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/commentBody" />
 
